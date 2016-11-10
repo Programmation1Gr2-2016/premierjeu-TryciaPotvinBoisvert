@@ -14,6 +14,7 @@ namespace exercice01
         Rectangle fenetre;
         GameObject heros;
         GameObject Ennemi;
+        GameObject projectiles;
 
         public Game1()
         {
@@ -61,6 +62,11 @@ namespace exercice01
             Ennemi.sprite = Content.Load<Texture2D>("KirbyEnnemi.png");
             Ennemi.position = new Rectangle(fenetre.Right-Ennemi.sprite.Bounds.Width,10,Ennemi.sprite.Bounds.Width,Ennemi.sprite.Bounds.Height);
 
+            projectiles = new GameObject();
+            projectiles.estVivant = true;
+            projectiles.vitesse = 5;
+            projectiles.sprite = Content.Load<Texture2D>("ArmeKirby.png");
+            projectiles.position = Ennemi.position;
 
             // TODO: use this.Content to load your game content here
         }
@@ -89,40 +95,22 @@ namespace exercice01
             {
                 heros.position.X += heros.vitesse;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.A))
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 heros.position.X -= heros.vitesse;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.W))
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 heros.position.Y -= heros.vitesse;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.S))
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 heros.position.Y += heros.vitesse;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.E))
-            {
-                heros.position.Y -= heros.vitesse;
-                heros.position.X += heros.vitesse;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Q))
-            {
-                heros.position.Y -= heros.vitesse;
-                heros.position.X -= heros.vitesse;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.C))
-            {
-                heros.position.Y += heros.vitesse;
-                heros.position.X += heros.vitesse;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Z))
-            {
-                heros.position.Y += heros.vitesse;
-                heros.position.X -= heros.vitesse;
-            }
+       
             UpdateHeros();
             UpdateEnnemi();
+            UpdateProjectiles();
             base.Update(gameTime);
         }
 
@@ -165,6 +153,11 @@ namespace exercice01
                 Ennemi.position.Y = Ennemi.vitesse;
             }
         }
+        protected void UpdateProjectiles()
+        {
+            projectiles.position = Ennemi.position;
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -176,11 +169,10 @@ namespace exercice01
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(heros.sprite, heros.position, Color.White);
+            spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
+            spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
             spriteBatch.End();
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }
