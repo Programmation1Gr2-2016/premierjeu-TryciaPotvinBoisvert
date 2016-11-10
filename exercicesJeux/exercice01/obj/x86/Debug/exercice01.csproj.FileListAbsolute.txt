@@ -24,3 +24,4 @@ C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoi
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\obj\x86\Debug\exercice01.exe
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\obj\x86\Debug\exercice01.pdb
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\KirbySingle.png
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\KirbyEnnemi.png

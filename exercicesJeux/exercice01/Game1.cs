@@ -13,6 +13,7 @@ namespace exercice01
         SpriteBatch spriteBatch;
         Rectangle fenetre;
         GameObject heros;
+        GameObject Ennemi;
 
         public Game1()
         {
@@ -31,8 +32,6 @@ namespace exercice01
             // TODO: Add your initialization logic here
             this.graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width;
             this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
-
-
             this.graphics.ToggleFullScreen();
             base.Initialize();
         }
@@ -49,13 +48,19 @@ namespace exercice01
             fenetre = graphics.GraphicsDevice.Viewport.Bounds;
             fenetre.Width = graphics.GraphicsDevice.DisplayMode.Width;
             fenetre.Height = graphics.GraphicsDevice.DisplayMode.Height;
-
-
+            
             heros = new GameObject();
             heros.estVivant = true;
             heros.vitesse = 5;
             heros.sprite = Content.Load<Texture2D>("KirbySingle.png");
             heros.position = heros.sprite.Bounds;
+
+            Ennemi = new GameObject();
+            Ennemi.estVivant = true;
+            Ennemi.vitesse = 5;
+            Ennemi.sprite = Content.Load<Texture2D>("KirbyEnnemi.png");
+            Ennemi.position = new Rectangle(fenetre.Right-Ennemi.sprite.Bounds.Width,10,Ennemi.sprite.Bounds.Width,Ennemi.sprite.Bounds.Height);
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -117,6 +122,7 @@ namespace exercice01
                 heros.position.X -= heros.vitesse;
             }
             UpdateHeros();
+            UpdateEnnemi();
             base.Update(gameTime);
         }
 
@@ -130,13 +136,35 @@ namespace exercice01
             {  
                 heros.position.Y = fenetre.Top;
             }
-            /*else if (heros.position.X < fenetre.Right)
+
+            else if (heros.position.X > fenetre.Right-heros.sprite.Width)
+            {
+                heros.position.X = fenetre.Right - heros.sprite.Width;
+            }
+            else if (heros.position.Y > fenetre.Bottom-heros.sprite.Height)
             {
 
-                heros.position.X = fenetre.Right;
-            }*/
+                heros.position.Y = fenetre.Bottom - heros.sprite.Height;
+            }
         }
+        protected void UpdateEnnemi()
+        {
+            Ennemi.position.Y += Ennemi.vitesse;
 
+            
+            if (Ennemi.position.Y < fenetre.Top)
+            {
+                Ennemi.position.Y = fenetre.Top;
+            }
+
+            
+            else if (Ennemi.position.Y > fenetre.Bottom - Ennemi.sprite.Height)
+            {
+
+                Ennemi.position.Y = fenetre.Bottom - Ennemi.sprite.Height;
+                Ennemi.position.Y = Ennemi.vitesse;
+            }
+        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -150,6 +178,9 @@ namespace exercice01
             spriteBatch.Draw(heros.sprite, heros.position, Color.White);
             spriteBatch.End();
 
+            spriteBatch.Begin();
+            spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

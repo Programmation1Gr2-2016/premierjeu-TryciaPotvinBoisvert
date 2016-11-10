@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\KirbyEnnemi.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\KirbySingle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
