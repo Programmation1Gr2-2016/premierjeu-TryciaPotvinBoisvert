@@ -51,13 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\ArmeKirby.png">
+    <Content Include="Content\Objets\ArmeKirby.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\KirbyEnnemi.png">
+    <Content Include="Content\Objets\KirbyEnnemi.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\KirbySingle.png">
+    <Content Include="Content\Objets\KirbySingle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />

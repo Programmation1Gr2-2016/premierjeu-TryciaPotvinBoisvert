@@ -33,6 +33,7 @@ namespace exercice01
             // TODO: Add your initialization logic here
             this.graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width;
             this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
+
             this.graphics.ToggleFullScreen();
             base.Initialize();
         }
@@ -49,24 +50,28 @@ namespace exercice01
             fenetre = graphics.GraphicsDevice.Viewport.Bounds;
             fenetre.Width = graphics.GraphicsDevice.DisplayMode.Width;
             fenetre.Height = graphics.GraphicsDevice.DisplayMode.Height;
-            
+
             heros = new GameObject();
             heros.estVivant = true;
-            heros.vitesse = 5;
-            heros.sprite = Content.Load<Texture2D>("KirbySingle.png");
+            heros.vitesse = 10;
+            heros.sprite = Content.Load<Texture2D>("Objets/KirbySingle.png");
             heros.position = heros.sprite.Bounds;
 
             Ennemi = new GameObject();
             Ennemi.estVivant = true;
-            Ennemi.vitesse = 5;
-            Ennemi.sprite = Content.Load<Texture2D>("KirbyEnnemi.png");
-            Ennemi.position = new Rectangle(fenetre.Right-Ennemi.sprite.Bounds.Width,10,Ennemi.sprite.Bounds.Width,Ennemi.sprite.Bounds.Height);
+            Ennemi.vitesse = 10;
+            Ennemi.sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
+            //Ennemi.position = new Rectangle(fenetre.Right-Ennemi.sprite.Bounds.Width,10,Ennemi.sprite.Bounds.Width,Ennemi.sprite.Bounds.Height);
+            Ennemi.position = Ennemi.sprite.Bounds;
+            Ennemi.position.X = fenetre.Right - Ennemi.sprite.Width;
 
             projectiles = new GameObject();
             projectiles.estVivant = true;
             projectiles.vitesse = 5;
-            projectiles.sprite = Content.Load<Texture2D>("ArmeKirby.png");
-            projectiles.position = Ennemi.position;
+            projectiles.sprite = Content.Load<Texture2D>("Objets/ArmeKirby.png");
+            projectiles.position = projectiles.sprite.Bounds;
+            projectiles.position.X = Ennemi.position.X;
+            projectiles.position.Y = Ennemi.position.Y;
 
             // TODO: use this.Content to load your game content here
         }
@@ -107,7 +112,7 @@ namespace exercice01
             {
                 heros.position.Y += heros.vitesse;
             }
-       
+
             UpdateHeros();
             UpdateEnnemi();
             UpdateProjectiles();
@@ -121,41 +126,67 @@ namespace exercice01
                 heros.position.X = fenetre.Left;
             }
             else if (heros.position.Y < fenetre.Top)
-            {  
+            {
                 heros.position.Y = fenetre.Top;
             }
 
-            else if (heros.position.X > fenetre.Right-heros.sprite.Width)
+            else if (heros.position.X > fenetre.Right - heros.sprite.Width)
             {
                 heros.position.X = fenetre.Right - heros.sprite.Width;
             }
-            else if (heros.position.Y > fenetre.Bottom-heros.sprite.Height)
+            else if (heros.position.Y > fenetre.Bottom - heros.sprite.Height)
             {
 
                 heros.position.Y = fenetre.Bottom - heros.sprite.Height;
             }
+
+            //Quand le heros ou l'ennemie se touche. ils meurent.
+            if (heros.position.Intersects(Ennemi.position))
+            {
+                Ennemi.estVivant = false;
+            }
+
+            if (heros.position.Intersects(projectiles.position))
+            {
+                heros.position=heros.sprite.Bounds;
+                projectiles.position.X = Ennemi.position.X;
+                projectiles.position.Y = Ennemi.position.Y;
+            }
+            if (projectiles.position.Intersects(heros.position))
+            {
+                projectiles.estVivant = false;
+            }
         }
+
         protected void UpdateEnnemi()
         {
             Ennemi.position.Y += Ennemi.vitesse;
 
-            
+
             if (Ennemi.position.Y < fenetre.Top)
             {
                 Ennemi.position.Y = fenetre.Top;
+                Ennemi.vitesse = -(Ennemi.vitesse);
             }
 
-            
+
             else if (Ennemi.position.Y > fenetre.Bottom - Ennemi.sprite.Height)
             {
 
                 Ennemi.position.Y = fenetre.Bottom - Ennemi.sprite.Height;
-                Ennemi.position.Y = Ennemi.vitesse;
+                Ennemi.vitesse = -(Ennemi.vitesse);
             }
         }
         protected void UpdateProjectiles()
         {
-            projectiles.position = Ennemi.position;
+            projectiles.position.X = projectiles.position.X-10;
+            if (projectiles.position.X < fenetre.Left)
+            {
+                projectiles.position.X = Ennemi.position.X;
+                projectiles.position.Y = Ennemi.position.Y;
+            }
+
+
         }
 
         /// <summary>
@@ -167,10 +198,16 @@ namespace exercice01
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin();      
             spriteBatch.Draw(heros.sprite, heros.position, Color.White);
-            spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
-            spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
+
+            if (Ennemi.estVivant)
+            {
+                spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
+
+                spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
+            }
+
             spriteBatch.End();
 
 
