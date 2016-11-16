@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using System;
 
 namespace exercice01
 {
@@ -83,22 +84,25 @@ namespace exercice01
             projectiles.position.X = Ennemi.position.X;
             projectiles.position.Y = Ennemi.position.Y;
 
+            
 
-
-            for (int i = 0; i < tableauEnnemi.GetLength(0) ; i++)
+            /*for (int i = 0; i < tableauEnnemi.GetLength(0); i++)
             {
                 for (int j = 0; j < tableauEnnemi.GetLength(1); j++)
                 {
-                    
-            tableauEnnemi[i] = new GameObject();
-            tableauEnnemi[i].estVivant = true;
-            tableauEnnemi[i].vitesse = 10;
-            tableauEnnemi[i].sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
-            tableauEnnemi[i].position = Ennemi.sprite.Bounds;
-            tableauEnnemi[i].position.X = fenetre.Right - Ennemi.sprite.Width;
+                    Random possitionTabEnnemi = new Random();
+
+                    tableauEnnemi[i] = new GameObject();
+                    tableauEnnemi[i].estVivant = true;
+                    tableauEnnemi[i].vitesse = 10;
+                    tableauEnnemi[i].sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
+                    tableauEnnemi[i].position = Ennemi.sprite.Bounds;
+                    tableauEnnemi[i].position.X = fenetre.Right - Ennemi.sprite.Width;
+                    tableauEnnemi[i].direction.X = possitionTabEnnemi.Next(-4, 5);
+                    tableauEnnemi[i].direction.Y = possitionTabEnnemi.Next(-4, 5);
 
                 }
-            }
+            }*/
 
             this.fond = this.Content.Load<Texture2D>("Objets/kirbyFond.png");
 
@@ -149,7 +153,7 @@ namespace exercice01
             UpdateEnnemi();
             UpdateProjectiles();
             UpdateCollision();
-            
+
             base.Update(gameTime);
         }
 
@@ -178,8 +182,6 @@ namespace exercice01
 
         protected void UpdateEnnemi()
         {
-            int nombreEnnemi = 0;
-
 
             Ennemi.position.Y += Ennemi.vitesse;
 
@@ -196,6 +198,8 @@ namespace exercice01
                 Ennemi.position.Y = fenetre.Bottom - Ennemi.sprite.Height;
                 Ennemi.vitesse = -(Ennemi.vitesse);
             }
+
+
         }
 
         protected void UpdateProjectiles()
@@ -231,7 +235,7 @@ namespace exercice01
 
                 projectiles.position.X = Ennemi.position.X;
                 projectiles.position.Y = Ennemi.position.Y;
-                
+
             }
             if (projectiles.position.Intersects(heros.position))
             {
@@ -253,9 +257,9 @@ namespace exercice01
             spriteBatch.Begin();
 
             this.spriteBatch.Draw(fond, fenetre, Color.White);
-            
+
             spriteBatch.Draw(heros.sprite, heros.position, Color.White);
-            
+
             if (Ennemi.estVivant)
             {
                 spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
