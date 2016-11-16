@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace exercice01
 {
@@ -14,7 +16,11 @@ namespace exercice01
         Rectangle fenetre;
         GameObject heros;
         GameObject Ennemi;
+        GameObject[] tableauEnnemi = new GameObject[10];
         GameObject projectiles;
+        public Texture2D fond;
+        SoundEffect son;
+        SoundEffectInstance mort;
 
         public Game1()
         {
@@ -45,6 +51,10 @@ namespace exercice01
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            Song song = Content.Load<Song>("Son\\Musique");
+            MediaPlayer.Play(song);
+
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             fenetre = graphics.GraphicsDevice.Viewport.Bounds;
@@ -67,11 +77,33 @@ namespace exercice01
 
             projectiles = new GameObject();
             projectiles.estVivant = true;
-            projectiles.vitesse = 5;
+            projectiles.vitesse = 20;
             projectiles.sprite = Content.Load<Texture2D>("Objets/ArmeKirby.png");
             projectiles.position = projectiles.sprite.Bounds;
             projectiles.position.X = Ennemi.position.X;
             projectiles.position.Y = Ennemi.position.Y;
+
+
+
+            for (int i = 0; i < tableauEnnemi.GetLength(0) ; i++)
+            {
+                for (int j = 0; j < tableauEnnemi.GetLength(1); j++)
+                {
+                    
+            tableauEnnemi[i] = new GameObject();
+            tableauEnnemi[i].estVivant = true;
+            tableauEnnemi[i].vitesse = 10;
+            tableauEnnemi[i].sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
+            tableauEnnemi[i].position = Ennemi.sprite.Bounds;
+            tableauEnnemi[i].position.X = fenetre.Right - Ennemi.sprite.Width;
+
+                }
+            }
+
+            this.fond = this.Content.Load<Texture2D>("Objets/kirbyFond.png");
+
+            son = Content.Load<SoundEffect>("Son\\KirbyDeath");
+            mort = son.CreateInstance();
 
             // TODO: use this.Content to load your game content here
         }
@@ -116,6 +148,8 @@ namespace exercice01
             UpdateHeros();
             UpdateEnnemi();
             UpdateProjectiles();
+            UpdateCollision();
+            
             base.Update(gameTime);
         }
 
@@ -140,28 +174,14 @@ namespace exercice01
                 heros.position.Y = fenetre.Bottom - heros.sprite.Height;
             }
 
-            //Quand le heros ou l'ennemie se touche. ils meurent.
-            if (heros.position.Intersects(Ennemi.position))
-            {
-                Ennemi.estVivant = false;
-            }
-
-            if (heros.position.Intersects(projectiles.position))
-            {
-                heros.position=heros.sprite.Bounds;
-                projectiles.position.X = Ennemi.position.X;
-                projectiles.position.Y = Ennemi.position.Y;
-            }
-            if (projectiles.position.Intersects(heros.position))
-            {
-                projectiles.estVivant = false;
-            }
         }
 
         protected void UpdateEnnemi()
         {
-            Ennemi.position.Y += Ennemi.vitesse;
+            int nombreEnnemi = 0;
 
+
+            Ennemi.position.Y += Ennemi.vitesse;
 
             if (Ennemi.position.Y < fenetre.Top)
             {
@@ -177,9 +197,10 @@ namespace exercice01
                 Ennemi.vitesse = -(Ennemi.vitesse);
             }
         }
+
         protected void UpdateProjectiles()
         {
-            projectiles.position.X = projectiles.position.X-10;
+            projectiles.position.X = projectiles.position.X - projectiles.vitesse;
             if (projectiles.position.X < fenetre.Left)
             {
                 projectiles.position.X = Ennemi.position.X;
@@ -188,6 +209,36 @@ namespace exercice01
 
 
         }
+
+        protected void UpdateCollision()
+        {
+            //Quand le heros ou l'ennemie se touche. ils meurent.
+
+            if (heros.position.Intersects(Ennemi.position))
+            {
+                Ennemi.estVivant = false;
+                //Sort l'ennemi de le fenêtre = ne peut pas continue a tuer le heros.
+                Ennemi.position.X = Ennemi.position.X - 2000;
+                Ennemi.position.Y = Ennemi.position.Y - 2000;
+            }
+
+            if (heros.position.Intersects(projectiles.position))
+            {
+                heros.position = heros.sprite.Bounds;
+
+                //joue le son quand le joueur se fait tuer        
+                mort.Play();
+
+                projectiles.position.X = Ennemi.position.X;
+                projectiles.position.Y = Ennemi.position.Y;
+                
+            }
+            if (projectiles.position.Intersects(heros.position))
+            {
+                projectiles.estVivant = false;
+            }
+        }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -198,18 +249,21 @@ namespace exercice01
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();      
-            spriteBatch.Draw(heros.sprite, heros.position, Color.White);
+            // Mettre en ordre d'affichage
+            spriteBatch.Begin();
 
+            this.spriteBatch.Draw(fond, fenetre, Color.White);
+            
+            spriteBatch.Draw(heros.sprite, heros.position, Color.White);
+            
             if (Ennemi.estVivant)
             {
                 spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
-
                 spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
+
             }
 
             spriteBatch.End();
-
 
             base.Draw(gameTime);
         }

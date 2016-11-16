@@ -26,3 +26,9 @@ C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoi
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Objets\ArmeKirby.png
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Objets\KirbyEnnemi.png
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Objets\KirbySingle.png
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Objets\kirbyFond.png
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Son\KirbyDeath.xnb
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Son\KirbyDeath.wav
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Son\Musique.wma
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Son\Musique.xnb
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\exercice01\bin\Windows\x86\Debug\Content\Son\Musique.wav
