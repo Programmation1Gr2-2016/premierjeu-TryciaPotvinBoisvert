@@ -17,7 +17,8 @@ namespace exercice01
         Rectangle fenetre;
         GameObject heros;
         GameObject Ennemi;
-        GameObject[] tableauEnnemi = new GameObject[10];
+        GameObject[] tabEnnemi = new GameObject[10];
+        Random possitionRdm = new Random();
         GameObject projectiles;
         public Texture2D fond;
         SoundEffect son;
@@ -68,13 +69,16 @@ namespace exercice01
             heros.sprite = Content.Load<Texture2D>("Objets/KirbySingle.png");
             heros.position = heros.sprite.Bounds;
 
-            Ennemi = new GameObject();
+            
+            /*Ennemi = new GameObject();
             Ennemi.estVivant = true;
             Ennemi.vitesse = 10;
             Ennemi.sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
             //Ennemi.position = new Rectangle(fenetre.Right-Ennemi.sprite.Bounds.Width,10,Ennemi.sprite.Bounds.Width,Ennemi.sprite.Bounds.Height);
             Ennemi.position = Ennemi.sprite.Bounds;
-            Ennemi.position.X = fenetre.Right - Ennemi.sprite.Width;
+            Ennemi.position.X = fenetre.Right - Ennemi.sprite.Width;*/
+            
+
 
             projectiles = new GameObject();
             projectiles.estVivant = true;
@@ -86,23 +90,22 @@ namespace exercice01
 
             
 
-            /*for (int i = 0; i < tableauEnnemi.GetLength(0); i++)
+            for (int i = 0; i < tabEnnemi.GetLength(0); i++)
             {
-                for (int j = 0; j < tableauEnnemi.GetLength(1); j++)
-                {
-                    Random possitionTabEnnemi = new Random();
+                { 
 
-                    tableauEnnemi[i] = new GameObject();
-                    tableauEnnemi[i].estVivant = true;
-                    tableauEnnemi[i].vitesse = 10;
-                    tableauEnnemi[i].sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
-                    tableauEnnemi[i].position = Ennemi.sprite.Bounds;
-                    tableauEnnemi[i].position.X = fenetre.Right - Ennemi.sprite.Width;
-                    tableauEnnemi[i].direction.X = possitionTabEnnemi.Next(-4, 5);
-                    tableauEnnemi[i].direction.Y = possitionTabEnnemi.Next(-4, 5);
+                    tabEnnemi[i] = new GameObject();
+                    tabEnnemi[i].estVivant = true;
+                    tabEnnemi[i].vitesse = 10;
+                    tabEnnemi[i].sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
+                    tabEnnemi[i].position = Ennemi.sprite.Bounds;
+                    tabEnnemi[i].position.X = fenetre.Right - Ennemi.sprite.Width;
+                    tabEnnemi[i].direction = Vector2.Zero;
+                    tabEnnemi[i].direction.X = possitionRdm.Next(-4, 5);
+                    tabEnnemi[i].direction.Y = possitionRdm.Next(-4, 5);
 
                 }
-            }*/
+            }
 
             this.fond = this.Content.Load<Texture2D>("Objets/kirbyFond.png");
 
@@ -184,6 +187,7 @@ namespace exercice01
         {
 
             Ennemi.position.Y += Ennemi.vitesse;
+            
 
             if (Ennemi.position.Y < fenetre.Top)
             {
