@@ -16,8 +16,8 @@ namespace exercice01
         SpriteBatch spriteBatch;
         Rectangle fenetre;
         GameObject heros;
-        GameObject Ennemi;
-        GameObject[] tabEnnemi = new GameObject[10];
+        //GameObject Ennemi;
+        GameObject[] tabEnnemi = new GameObject[5];
         Random possitionRdm = new Random();
         GameObject projectiles;
         public Texture2D fond;
@@ -69,7 +69,7 @@ namespace exercice01
             heros.sprite = Content.Load<Texture2D>("Objets/KirbySingle.png");
             heros.position = heros.sprite.Bounds;
 
-            
+
             /*Ennemi = new GameObject();
             Ennemi.estVivant = true;
             Ennemi.vitesse = 10;
@@ -77,7 +77,22 @@ namespace exercice01
             //Ennemi.position = new Rectangle(fenetre.Right-Ennemi.sprite.Bounds.Width,10,Ennemi.sprite.Bounds.Width,Ennemi.sprite.Bounds.Height);
             Ennemi.position = Ennemi.sprite.Bounds;
             Ennemi.position.X = fenetre.Right - Ennemi.sprite.Width;*/
-            
+
+
+            for (int i = 0; i < tabEnnemi.Length; i++)
+            {
+                
+                tabEnnemi[i] = new GameObject();
+                tabEnnemi[i].estVivant = true;
+                tabEnnemi[i].vitesse = 10;
+                tabEnnemi[i].sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
+                tabEnnemi[i].position = tabEnnemi[i].sprite.Bounds;
+                tabEnnemi[i].position.X = fenetre.Right - tabEnnemi[i].sprite.Width;
+                tabEnnemi[i].direction = Vector2.Zero;
+                tabEnnemi[i].direction.X = possitionRdm.Next(-4, 5);
+                tabEnnemi[i].direction.Y = possitionRdm.Next(-4, 5);
+                
+            }
 
 
             projectiles = new GameObject();
@@ -85,27 +100,8 @@ namespace exercice01
             projectiles.vitesse = 20;
             projectiles.sprite = Content.Load<Texture2D>("Objets/ArmeKirby.png");
             projectiles.position = projectiles.sprite.Bounds;
-            projectiles.position.X = Ennemi.position.X;
-            projectiles.position.Y = Ennemi.position.Y;
-
-            
-
-            for (int i = 0; i < tabEnnemi.GetLength(0); i++)
-            {
-                { 
-
-                    tabEnnemi[i] = new GameObject();
-                    tabEnnemi[i].estVivant = true;
-                    tabEnnemi[i].vitesse = 10;
-                    tabEnnemi[i].sprite = Content.Load<Texture2D>("Objets/KirbyEnnemi.png");
-                    tabEnnemi[i].position = Ennemi.sprite.Bounds;
-                    tabEnnemi[i].position.X = fenetre.Right - Ennemi.sprite.Width;
-                    tabEnnemi[i].direction = Vector2.Zero;
-                    tabEnnemi[i].direction.X = possitionRdm.Next(-4, 5);
-                    tabEnnemi[i].direction.Y = possitionRdm.Next(-4, 5);
-
-                }
-            }
+            projectiles.position.X = heros.position.X;
+            projectiles.position.Y = heros.position.Y;
 
             this.fond = this.Content.Load<Texture2D>("Objets/kirbyFond.png");
 
@@ -185,34 +181,56 @@ namespace exercice01
 
         protected void UpdateEnnemi()
         {
-
-            Ennemi.position.Y += Ennemi.vitesse;
-            
-
-            if (Ennemi.position.Y < fenetre.Top)
-            {
-                Ennemi.position.Y = fenetre.Top;
-                Ennemi.vitesse = -(Ennemi.vitesse);
-            }
-
-
-            else if (Ennemi.position.Y > fenetre.Bottom - Ennemi.sprite.Height)
+            for (int i = 0; i < tabEnnemi.Length; i++)
             {
 
-                Ennemi.position.Y = fenetre.Bottom - Ennemi.sprite.Height;
-                Ennemi.vitesse = -(Ennemi.vitesse);
+                tabEnnemi[i].position.X += (int)tabEnnemi[i].direction.X;
+                tabEnnemi[i].position.Y += (int)tabEnnemi[i].direction.Y;
+
+
+                if (tabEnnemi[i].position.Y < fenetre.Top)
+                {
+                    tabEnnemi[i].position.Y = fenetre.Top;
+                    tabEnnemi[i].direction.X = possitionRdm.Next(-4, 5);
+                    tabEnnemi[i].direction.Y = possitionRdm.Next(-4, 5);
+                }
+
+
+                if (tabEnnemi[i].position.Y > fenetre.Bottom - tabEnnemi[i].sprite.Height)
+                {
+
+                    tabEnnemi[i].position.Y = fenetre.Bottom - tabEnnemi[i].sprite.Height;
+                    tabEnnemi[i].direction.X = possitionRdm.Next(-4, 5);
+                    tabEnnemi[i].direction.Y = possitionRdm.Next(-4, 5);
+                }
+
+                if (tabEnnemi[i].position.X > fenetre.Right - tabEnnemi[i].sprite.Width)
+                {
+                    tabEnnemi[i].position.X = fenetre.Right - tabEnnemi[i].sprite.Width;
+                    tabEnnemi[i].direction.X = possitionRdm.Next(-4, 5);
+                    tabEnnemi[i].direction.Y = possitionRdm.Next(-4, 5);
+                }
+
+                if (tabEnnemi[i].position.X < fenetre.Left)
+                {
+                    tabEnnemi[i].position.X = fenetre.Left;
+                    tabEnnemi[i].direction.X = possitionRdm.Next(-4, 5);
+                    tabEnnemi[i].direction.Y = possitionRdm.Next(-4, 5);
+                }
             }
+
 
 
         }
 
         protected void UpdateProjectiles()
         {
-            projectiles.position.X = projectiles.position.X - projectiles.vitesse;
-            if (projectiles.position.X < fenetre.Left)
+            projectiles.position.X = projectiles.position.X + projectiles.vitesse;
+
+            if (projectiles.position.X < fenetre.Right)
             {
-                projectiles.position.X = Ennemi.position.X;
-                projectiles.position.Y = Ennemi.position.Y;
+                projectiles.position.X = heros.position.X;
+                projectiles.position.Y = heros.position.Y;
             }
 
 
@@ -221,29 +239,32 @@ namespace exercice01
         protected void UpdateCollision()
         {
             //Quand le heros ou l'ennemie se touche. ils meurent.
-
-            if (heros.position.Intersects(Ennemi.position))
+            for (int i = 0; i < tabEnnemi.Length; i++)
             {
-                Ennemi.estVivant = false;
-                //Sort l'ennemi de le fenêtre = ne peut pas continue a tuer le heros.
-                Ennemi.position.X = Ennemi.position.X - 2000;
-                Ennemi.position.Y = Ennemi.position.Y - 2000;
-            }
+                if (heros.position.Intersects(tabEnnemi[i].position))
+                {
+                    tabEnnemi[1].estVivant = false;
+                    //Sort l'ennemi de le fenêtre = ne peut pas continue a tuer le heros.
+                    //Marche pas. yay.
+                    tabEnnemi[i].position.X = tabEnnemi[i].position.X - 2000;
+                    tabEnnemi[i].position.Y = tabEnnemi[i].position.Y - 2000;
+                    tabEnnemi[i].direction.X = 0;
+                    tabEnnemi[i].direction.Y = 0;
 
-            if (heros.position.Intersects(projectiles.position))
-            {
-                heros.position = heros.sprite.Bounds;
+                }
 
-                //joue le son quand le joueur se fait tuer        
-                mort.Play();
+                if (projectiles.position.Intersects(tabEnnemi[i].position))
+                {
+                    projectiles.estVivant = false;
+                }
 
-                projectiles.position.X = Ennemi.position.X;
-                projectiles.position.Y = Ennemi.position.Y;
+                if (tabEnnemi[i].position.Intersects(projectiles.position))
+                {
+                    tabEnnemi[i].estVivant = false;
+                    //joue le son quand le joueur se fait tuer        
+                    mort.Play();
+                }
 
-            }
-            if (projectiles.position.Intersects(heros.position))
-            {
-                projectiles.estVivant = false;
             }
         }
 
@@ -264,11 +285,22 @@ namespace exercice01
 
             spriteBatch.Draw(heros.sprite, heros.position, Color.White);
 
-            if (Ennemi.estVivant)
-            {
-                spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
-                spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
 
+
+            for (int i = 0; i < tabEnnemi.Length; i++)
+            {
+
+                if (tabEnnemi[i].estVivant)
+                {
+                    spriteBatch.Draw(tabEnnemi[i].sprite, tabEnnemi[i].position, Color.White);
+
+                }
+
+            }
+
+            if (projectiles.estVivant)
+            {
+                spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
             }
 
             spriteBatch.End();
