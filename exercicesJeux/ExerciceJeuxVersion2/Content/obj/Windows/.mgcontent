@@ -6,5 +6,7 @@
   <SourceFiles>
     <File>C:/Users/Trycia/Documents/Visual Studio 2015/Projects/premierjeu-TryciaPotvinBoisvert/exercicesJeux/ExerciceJeuxVersion2/Content/Son/KirbyDeath.wav</File>
     <File>C:/Users/Trycia/Documents/Visual Studio 2015/Projects/premierjeu-TryciaPotvinBoisvert/exercicesJeux/ExerciceJeuxVersion2/Content/Son/Musique.wav</File>
+    <File>C:/Users/Trycia/Documents/Visual Studio 2015/Projects/premierjeu-TryciaPotvinBoisvert/exercicesJeux/ExerciceJeuxVersion2/Content/Son/KirbyDanse.mp3</File>
+    <File>C:/Users/Trycia/Documents/Visual Studio 2015/Projects/premierjeu-TryciaPotvinBoisvert/exercicesJeux/ExerciceJeuxVersion2/Content/Son/GameOverKirby1.wav</File>
   </SourceFiles>
 </SourceFileCollection>

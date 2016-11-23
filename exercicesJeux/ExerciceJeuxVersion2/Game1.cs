@@ -18,10 +18,13 @@ namespace ExerciceJeuxVersion2
         GameObject heros;
         GameObject Ennemi;
         GameObject projectiles;
+        GameObject armeKirby;
         public Texture2D fond;
         SoundEffect son;
         SoundEffectInstance mort;
         SpriteFont font;
+        int viekirby = 5;
+
 
         public Game1()
         {
@@ -41,9 +44,9 @@ namespace ExerciceJeuxVersion2
             this.graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width;
             this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
 
-            this.graphics.ToggleFullScreen();
+            //this.graphics.ToggleFullScreen();
             base.Initialize();
-            
+
         }
 
         /// <summary>
@@ -54,7 +57,10 @@ namespace ExerciceJeuxVersion2
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             Song song = Content.Load<Song>("Son\\Musique");
+            //Song winSong = Content.Load<Song>("Son\\KirbyDanse");
+            //Song gameOver = Content.Load<Song>("Son\\GameOverKirby");
             MediaPlayer.Play(song);
+            
 
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -86,6 +92,16 @@ namespace ExerciceJeuxVersion2
             projectiles.position = projectiles.sprite.Bounds;
             projectiles.position.X = Ennemi.position.X;
             projectiles.position.Y = Ennemi.position.Y;
+
+            armeKirby = new GameObject();
+            armeKirby.estVivant = false;
+            armeKirby.vitesse = 20;
+            armeKirby.sprite = Content.Load<Texture2D>("Objets/ProjectilesKirby.png");
+            armeKirby.position = armeKirby.sprite.Bounds;
+            //armeKirby.position.X = heros.position.X;
+            //armeKirby.position.Y = heros.position.Y;
+
+
 
             this.fond = this.Content.Load<Texture2D>("Objets/kirbyFond.png");
 
@@ -133,6 +149,15 @@ namespace ExerciceJeuxVersion2
             {
                 heros.position.Y += heros.vitesse;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                //armeKirby.position.X = heros.position.X;
+                // armeKirby.position.Y = heros.position.Y;
+                armeKirby.estVivant = true;
+                //armeKirby.position.X += armeKirby.vitesse;
+
+                
+            }
 
             UpdateHeros();
             UpdateEnnemi();
@@ -163,6 +188,7 @@ namespace ExerciceJeuxVersion2
                 heros.position.Y = fenetre.Bottom - heros.sprite.Height;
             }
 
+
         }
 
         protected void UpdateEnnemi()
@@ -186,7 +212,7 @@ namespace ExerciceJeuxVersion2
                 Ennemi.vitesse = -(Ennemi.vitesse);
             }
 
-            
+
 
 
         }
@@ -200,6 +226,15 @@ namespace ExerciceJeuxVersion2
                 projectiles.position.Y = Ennemi.position.Y;
             }
 
+            armeKirby.position.X =  armeKirby.position.X + armeKirby.vitesse;
+            if (armeKirby.position.X > fenetre.Left - armeKirby.position.Width)
+            {
+                armeKirby.position.X = heros.position.X;
+                armeKirby.position.Y = heros.position.Y;
+                armeKirby.estVivant = false;
+            }
+           
+            
         }
 
         protected void UpdateCollision()
@@ -213,8 +248,9 @@ namespace ExerciceJeuxVersion2
                 Ennemi.position.X = Ennemi.position.X - 2000;
                 Ennemi.position.Y = Ennemi.position.Y - 2000;
 
-                
+
             }
+
 
             if (heros.position.Intersects(projectiles.position))
             {
@@ -222,6 +258,15 @@ namespace ExerciceJeuxVersion2
 
                 //joue le son quand le joueur se fait tuer        
                 mort.Play();
+                viekirby--;
+
+                if (viekirby == 0)
+                {
+                    heros.estVivant = false;
+                    heros.position.X = heros.position.X - 3000;
+                    heros.position.Y = heros.position.Y - 3000;
+
+                }
 
                 projectiles.position.X = Ennemi.position.X;
                 projectiles.position.Y = Ennemi.position.Y;
@@ -230,6 +275,13 @@ namespace ExerciceJeuxVersion2
             if (projectiles.position.Intersects(heros.position))
             {
                 projectiles.estVivant = false;
+            }
+
+            if (armeKirby.position.Intersects(Ennemi.position))
+            {
+                projectiles.estVivant = false;
+                armeKirby.position.X = heros.position.X;
+                armeKirby.position.Y = heros.position.Y;
             }
 
 
@@ -241,7 +293,7 @@ namespace ExerciceJeuxVersion2
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
-        {   
+        {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
@@ -250,22 +302,54 @@ namespace ExerciceJeuxVersion2
 
             this.spriteBatch.Draw(fond, fenetre, Color.White);
 
-            
 
-            spriteBatch.Draw(heros.sprite, heros.position, Color.White);
+            if (heros.estVivant)
+            {
+                spriteBatch.Draw(heros.sprite, heros.position, Color.White);
+
+                if (armeKirby.estVivant)
+                {
+                    spriteBatch.Draw(armeKirby.sprite, heros.position, Color.White);
+                }
+                
+
+            }
+
+            if (heros.estVivant == false)
+            {
+                MediaPlayer.Stop();
+                Song gameOver = Content.Load<Song>("Son\\GameOverKirby1");
+                MediaPlayer.Play(gameOver);
+
+                spriteBatch.DrawString(font,
+                    "****************\n"+
+                    "*    D.E.A.D   *\n"+
+                    "****************\n", 
+                    new Vector2(600, 100), Color.Red);
+
+                Ennemi.position.X = Ennemi.position.X + 2000;
+                Ennemi.position.Y = Ennemi.position.Y + 2000;
+                projectiles.position.X = projectiles.position.X + 2000;
+                projectiles.position.Y = projectiles.position.Y + 2000;
+                
+
+            }
 
             if (Ennemi.estVivant)
             {
                 spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
-
                 spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
 
             }
 
             if (Ennemi.estVivant == false)
-                {
-                    spriteBatch.DrawString(font, "YOU WIN!!!", new Vector2(500, 100), Color.Black);
-                }
+            {
+                MediaPlayer.Stop();
+                Song winSong = Content.Load<Song>("Son\\KirbyDanse");
+                MediaPlayer.Play(winSong);
+                spriteBatch.DrawString(font, "YOU WIN!!!", new Vector2(600, 100), Color.Black);
+
+            }
 
             spriteBatch.End();
 
@@ -274,4 +358,7 @@ namespace ExerciceJeuxVersion2
         }
     }
 }
+
+//Demander comment faire pour que mon projectile part du Heros. CA MARCHE PAS ;C
+//Demander comment faire pour changer de chanson quand le joueur perd ou meurt.
 

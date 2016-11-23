@@ -25,3 +25,15 @@
 /processorParam:Quality=Best
 /build:Son/Musique.wav
 
+#begin Son/KirbyDanse.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Son/KirbyDanse.mp3
+
+#begin Son/GameOverKirby1.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Son/GameOverKirby1.wav
+

@@ -33,3 +33,10 @@ C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoi
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\Musique.xnb
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\Musique.wma
 C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Font\Font.xnb
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Objets\ProjectilesKirby.png
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\KirbyDanse.wma
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\KirbyDanse.xnb
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\KirbyDanse.mp3
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\GameOverKirby1.wma
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\GameOverKirby1.xnb
+C:\Users\Trycia\Documents\Visual Studio 2015\Projects\premierjeu-TryciaPotvinBoisvert\exercicesJeux\ExerciceJeuxVersion2\bin\Windows\x86\Debug\Content\Son\GameOverKirby1.wav

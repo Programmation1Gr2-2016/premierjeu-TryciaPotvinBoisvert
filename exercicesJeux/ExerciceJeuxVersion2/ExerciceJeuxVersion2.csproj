@@ -63,6 +63,15 @@
     <Content Include="Content\Objets\KirbySingle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Objets\ProjectilesKirby.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Son\GameOverKirby1.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Son\KirbyDanse.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Son\KirbyDeath.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

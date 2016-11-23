@@ -3,7 +3,7 @@
   <SourceFile>C:/Users/Trycia/Documents/Visual Studio 2015/Projects/premierjeu-TryciaPotvinBoisvert/exercicesJeux/ExerciceJeuxVersion2/Content/Son/KirbyDeath.wav</SourceFile>
   <SourceTime>2016-11-22T10:27:05.4837818-05:00</SourceTime>
   <DestFile>C:/Users/Trycia/Documents/Visual Studio 2015/Projects/premierjeu-TryciaPotvinBoisvert/exercicesJeux/ExerciceJeuxVersion2/Content/bin/Windows/Son/KirbyDeath.xnb</DestFile>
-  <DestTime>2016-11-22T10:58:29.5386383-05:00</DestTime>
+  <DestTime>2016-11-22T23:27:55.8977063-05:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2016-03-30T02:36:08-04:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>
