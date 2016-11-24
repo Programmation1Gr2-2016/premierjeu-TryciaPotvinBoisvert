@@ -18,7 +18,7 @@ namespace ExerciceJeuxVersion2
         GameObject heros;
         GameObject Ennemi;
         //GameObject projectiles;
-        GameObject[] tabProjectiles = new GameObject[3];
+        GameObject[] tabProjectiles = new GameObject[5];
         Random projectilesRdm = new Random();
         GameObject armeKirby;
         public Texture2D fond;
@@ -27,11 +27,13 @@ namespace ExerciceJeuxVersion2
         SpriteFont font;
         bool sonGagne = false;
         bool sonPerd = false;
+        bool calculTemps = true;
+        string finTemps;
         Song winSong;
         Song gameOver;
 
         int viekirby = 5;
-        int vieEnnemi = 3;
+        int vieEnnemi = 4;
 
 
         public Game1()
@@ -291,7 +293,7 @@ namespace ExerciceJeuxVersion2
         {
             //Quand le heros ou l'ennemie se touche. ils meurent.
 
-            if (heros.position.Intersects(Ennemi.position))
+            if (armeKirby.position.Intersects(Ennemi.position))
             {
 
                 vieEnnemi--;
@@ -377,7 +379,7 @@ namespace ExerciceJeuxVersion2
 
                 if (armeKirby.estVivant)
                 {
-                    spriteBatch.Draw(armeKirby.sprite, heros.position, Color.White);
+                    spriteBatch.Draw(armeKirby.sprite, armeKirby.position, Color.White);
                 }
 
 
@@ -392,6 +394,17 @@ namespace ExerciceJeuxVersion2
                     MediaPlayer.Play(gameOver);
                     sonPerd = true;
                 }
+
+                //Enregistrer le temps final
+                if (calculTemps)
+                {
+                    finTemps = gameTime.TotalGameTime.Seconds.ToString();
+                    calculTemps = false;
+
+                }
+
+                //Afficher le temps
+                spriteBatch.DrawString(font, "Time: " + finTemps + " Sec", new Vector2(0, 0), Color.Black);
 
                 spriteBatch.DrawString(font,
                     "****************\n" +
@@ -433,7 +446,16 @@ namespace ExerciceJeuxVersion2
             //Affiche message gagnant
             if (Ennemi.estVivant == false)
             {
-
+                Ennemi.position.X = Ennemi.position.X + 2000;
+                Ennemi.position.Y = Ennemi.position.Y + 2000;
+                for (int i = 0; i < tabProjectiles.Length; i++)
+                {
+                    if (tabProjectiles[i].estVivant)
+                    {
+                        tabProjectiles[i].position.X = tabProjectiles[i].position.X + 2000;
+                        tabProjectiles[i].position.Y = tabProjectiles[i].position.Y + 2000;
+                    }
+                }
 
                 if (!sonGagne)
                 {
@@ -443,9 +465,17 @@ namespace ExerciceJeuxVersion2
                 }
 
                 spriteBatch.DrawString(font, "YOU WIN!!!", new Vector2(550, 250), Color.Black);
-                spriteBatch.DrawString(font, "Time: " + gameTime.TotalGameTime.Seconds.ToString(), new Vector2(0, 0), Color.Black);
+
+                if (calculTemps)
+                {
+                    finTemps = gameTime.TotalGameTime.Seconds.ToString();
+                    calculTemps = false;
+
+                }
+
+                spriteBatch.DrawString(font, "Time: " + finTemps + " Sec", new Vector2(0, 0), Color.Black);
             }
-            
+
             spriteBatch.End();
 
 
