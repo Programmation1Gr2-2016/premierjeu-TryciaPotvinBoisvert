@@ -281,7 +281,9 @@ namespace exercice01
             // Mettre en ordre d'affichage
             spriteBatch.Begin();
 
+
             this.spriteBatch.Draw(fond, fenetre, Color.White);
+
 
             spriteBatch.Draw(heros.sprite, heros.position, Color.White);
 

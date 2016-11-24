@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "exercice01", "exercice01\ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExerciceJeuxVersion2", "ExerciceJeuxVersion2\ExerciceJeuxVersion2.csproj", "{21591AD7-8822-411C-BC0D-09E87BE5A5D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JeuxAnime", "JeuxAnime\JeuxAnime.csproj", "{753EEBE0-3805-49BD-8E04-16BDF8CA6EB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -21,6 +23,10 @@ Global
 		{21591AD7-8822-411C-BC0D-09E87BE5A5D2}.Debug|x86.Build.0 = Debug|x86
 		{21591AD7-8822-411C-BC0D-09E87BE5A5D2}.Release|x86.ActiveCfg = Release|x86
 		{21591AD7-8822-411C-BC0D-09E87BE5A5D2}.Release|x86.Build.0 = Release|x86
+		{753EEBE0-3805-49BD-8E04-16BDF8CA6EB9}.Debug|x86.ActiveCfg = Debug|x86
+		{753EEBE0-3805-49BD-8E04-16BDF8CA6EB9}.Debug|x86.Build.0 = Debug|x86
+		{753EEBE0-3805-49BD-8E04-16BDF8CA6EB9}.Release|x86.ActiveCfg = Release|x86
+		{753EEBE0-3805-49BD-8E04-16BDF8CA6EB9}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
