@@ -21,19 +21,30 @@ namespace ExerciceJeuxVersion2
         GameObject[] tabProjectiles = new GameObject[5];
         Random projectilesRdm = new Random();
         GameObject armeKirby;
+        GameObject[] tabEtoiles = new GameObject[50];
+        Random etoiles = new Random();
         public Texture2D fond;
+
+        //Son
         SoundEffect son;
         SoundEffectInstance mort;
+        SoundEffect son2;
+        SoundEffectInstance lance;
+        SoundEffect son3;
+        SoundEffectInstance toucheEnnemi;
+
         SpriteFont font;
         bool sonGagne = false;
         bool sonPerd = false;
         bool calculTemps = true;
         string finTemps;
+
+        //musique
         Song winSong;
         Song gameOver;
 
-        int viekirby = 5;
-        int vieEnnemi = 4;
+        int viekirby = 3;
+        int vieEnnemi = 6;
 
 
         public Game1()
@@ -81,6 +92,13 @@ namespace ExerciceJeuxVersion2
             son = Content.Load<SoundEffect>("Son\\KirbyDeath");
             mort = son.CreateInstance();
 
+            son2 = Content.Load<SoundEffect>("Son\\LancerKirby");
+            lance = son2.CreateInstance();
+
+            son3 = Content.Load<SoundEffect>("Son\\ToucherEnnemiKirby");
+            toucheEnnemi = son3.CreateInstance();
+
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             fenetre = graphics.GraphicsDevice.Viewport.Bounds;
@@ -114,7 +132,7 @@ namespace ExerciceJeuxVersion2
                 tabProjectiles[i] = new GameObject();
                 tabProjectiles[i].estVivant = true;
                 tabProjectiles[i].vitesse = 10;
-                tabProjectiles[i].sprite = Content.Load<Texture2D>("Objets/ArmeKirby.png");
+                tabProjectiles[i].sprite = Content.Load<Texture2D>("Objets/EpeeMetaKnight.png");
                 tabProjectiles[i].position = tabProjectiles[i].sprite.Bounds;
                 tabProjectiles[i].position.X = Ennemi.position.X;
                 tabProjectiles[i].position.Y = Ennemi.position.Y;
@@ -129,6 +147,21 @@ namespace ExerciceJeuxVersion2
             armeKirby.vitesse = 20;
             armeKirby.sprite = Content.Load<Texture2D>("Objets/ProjectilesKirby.png");
             armeKirby.position = armeKirby.sprite.Bounds;
+
+            for (int i = 0; i < tabEtoiles.Length; i++)
+            {
+                tabEtoiles[i] = new GameObject();
+                tabEtoiles[i].estVivant = false;
+                tabEtoiles[i].vitesse = etoiles.Next(2, 10);
+                tabEtoiles[i].sprite = Content.Load<Texture2D>("Objets/EtoileFin.png");
+                tabEtoiles[i].position = tabEtoiles[i].sprite.Bounds;
+                //tabEtoiles[i].position.X = heros.position.X;
+                //tabEtoiles[i].position.Y = heros.position.Y;
+                tabEtoiles[i].direction = Vector2.Zero;
+                tabEtoiles[i].direction.X = etoiles.Next(-4, 5);
+                tabEtoiles[i].direction.Y = etoiles.Next(-4, 5);
+
+            }
 
             // TODO: use this.Content to load your game content here
         }
@@ -171,6 +204,7 @@ namespace ExerciceJeuxVersion2
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
+                lance.Play();
                 armeKirby.position.X = heros.position.X;
                 armeKirby.position.Y = heros.position.Y;
                 armeKirby.estVivant = true;
@@ -278,10 +312,29 @@ namespace ExerciceJeuxVersion2
                 armeKirby.position.X = armeKirby.position.X + armeKirby.vitesse;
                 if (armeKirby.position.X > fenetre.Right + armeKirby.sprite.Bounds.Width)
                 {
+
                     armeKirby.estVivant = false;
                     armeKirby.position.X = heros.position.X;
                     armeKirby.position.Y = heros.position.Y;
 
+                }
+
+            }
+
+            for (int i = 0; i < tabEtoiles.Length; i++)
+            {
+                //toujours position heros
+                
+
+                if (tabEtoiles[i].estVivant)
+                {
+                    //tabEtoiles[i].position.X += tabEtoiles[i].vitesse;
+                    //tabEtoiles[i].position.Y += tabEtoiles[i].vitesse;
+                    tabEtoiles[i].position.X += (int)tabEtoiles[i].direction.X;
+                    tabEtoiles[i].position.Y += (int)tabEtoiles[i].direction.Y;
+
+                    tabEtoiles[i].direction.X = etoiles.Next(-5, 6) + tabEtoiles[i].vitesse;
+                    tabEtoiles[i].direction.Y = etoiles.Next(-5, 6) + tabEtoiles[i].vitesse;
                 }
 
             }
@@ -295,23 +348,21 @@ namespace ExerciceJeuxVersion2
 
             if (armeKirby.position.Intersects(Ennemi.position))
             {
-
+                toucheEnnemi.Play();
                 vieEnnemi--;
 
                 if (vieEnnemi == 0)
                 {
+
                     Ennemi.estVivant = false;
                     //Sort l'ennemi de le fenêtre = ne peut pas continue a tuer le heros.
                     Ennemi.position.X = Ennemi.position.X - 2000;
                     Ennemi.position.Y = Ennemi.position.Y - 2000;
                 }
-
-
             }
 
             for (int i = 0; i < tabProjectiles.Length; i++)
             {
-
 
                 if (heros.position.Intersects(tabProjectiles[i].position))
                 {
@@ -351,6 +402,10 @@ namespace ExerciceJeuxVersion2
                 if (vieEnnemi == 0)
                 {
                     Ennemi.estVivant = false;
+                    for (int i = 0; i < tabEtoiles.Length; i++)
+                    {
+                        tabEtoiles[i].estVivant = true;
+                    }
                 }
             }
 
@@ -371,6 +426,9 @@ namespace ExerciceJeuxVersion2
             spriteBatch.Begin();
 
             this.spriteBatch.Draw(fond, fenetre, Color.White);
+            spriteBatch.DrawString(font, "Vie Kirby: " + viekirby, new Vector2(1000, 0), Color.Black);
+            spriteBatch.DrawString(font, "Vie Meta Knight: " + vieEnnemi/2, new Vector2(1000, 50), Color.Black);
+
 
             //Affiche le Heros
             if (heros.estVivant)
@@ -408,7 +466,7 @@ namespace ExerciceJeuxVersion2
 
                 spriteBatch.DrawString(font,
                     "****************\n" +
-                    "*    D.E.A.D   *\n" +
+                    "*     D.E.A.D    *\n" +
                     "****************\n",
                     new Vector2(550, 250), Color.Red);
                 heros.position.X = heros.position.X - 2000;
@@ -431,6 +489,7 @@ namespace ExerciceJeuxVersion2
             if (Ennemi.estVivant)
             {
                 spriteBatch.Draw(Ennemi.sprite, Ennemi.position, Color.White);
+
                 //spriteBatch.Draw(projectiles.sprite, projectiles.position, Color.White);
 
                 for (int i = 0; i < tabProjectiles.Length; i++)
@@ -474,8 +533,17 @@ namespace ExerciceJeuxVersion2
                 }
 
                 spriteBatch.DrawString(font, "Time: " + finTemps + " Sec", new Vector2(0, 0), Color.Black);
-            }
 
+                for (int i = 0; i < tabEtoiles.Length; i++)
+                {
+
+                    if (tabEtoiles[i].estVivant)
+                    {
+                        spriteBatch.Draw(tabEtoiles[i].sprite, tabEtoiles[i].position, Color.White);
+                    }
+                }
+            }
+            
             spriteBatch.End();
 
 

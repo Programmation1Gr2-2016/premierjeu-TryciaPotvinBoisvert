@@ -37,3 +37,15 @@
 /processorParam:Quality=Best
 /build:Son/GameOverKirby1.wav
 
+#begin Son/LancerKirby.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Son/LancerKirby.wav
+
+#begin Son/ToucherEnnemiKirby.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Son/ToucherEnnemiKirby.wav
+
