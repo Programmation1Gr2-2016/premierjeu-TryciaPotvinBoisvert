@@ -115,14 +115,14 @@ namespace JeuxAnime
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             spriteBatch.Draw(rambo.sprite, rambo.position, rambo.spriteAfficher, Color.White);
             spriteBatch.End();
-            base.Draw(gameTime);
+            
 
             base.Draw(gameTime);
         }

@@ -328,13 +328,14 @@ namespace ExerciceJeuxVersion2
 
                 if (tabEtoiles[i].estVivant)
                 {
-                    //tabEtoiles[i].position.X += tabEtoiles[i].vitesse;
-                    //tabEtoiles[i].position.Y += tabEtoiles[i].vitesse;
+                    
                     tabEtoiles[i].position.X += (int)tabEtoiles[i].direction.X;
                     tabEtoiles[i].position.Y += (int)tabEtoiles[i].direction.Y;
 
+                    //Mettre ds For quand on gagne la partie
                     tabEtoiles[i].direction.X = etoiles.Next(-5, 6) + tabEtoiles[i].vitesse;
                     tabEtoiles[i].direction.Y = etoiles.Next(-5, 6) + tabEtoiles[i].vitesse;
+                    
                 }
 
             }
