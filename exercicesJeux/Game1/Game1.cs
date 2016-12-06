@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Game1
 {
@@ -12,12 +13,18 @@ namespace Game1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle fenetre;
+
         // Fond de tuiles
         GameObjectTile fond;
         GameObjectAnime cat;
         KeyboardState keys = new KeyboardState();
         KeyboardState previousKeys = new KeyboardState();
         SpriteFont font;
+        bool calculTemps = true;
+        string finTempsMin;
+        string finTempsSec;
+        int totalTemps;
+        
 
 
         public Game1()
@@ -57,10 +64,15 @@ namespace Game1
             fenetre.Width = graphics.GraphicsDevice.DisplayMode.Width;
             fenetre.Height = graphics.GraphicsDevice.DisplayMode.Height;
 
+
             font = Content.Load<SpriteFont>("Font/Font");
 
             fond = new GameObjectTile();
             fond.texture = Content.Load<Texture2D>("Fond\\TileSheet.png");
+
+            //musique
+            Song song = Content.Load<Song>("Music\\Motivated");
+            MediaPlayer.Play(song);
 
             cat = new GameObjectAnime();
             cat.direction = Vector2.Zero;
@@ -141,6 +153,11 @@ namespace Game1
                 cat.objetState = GameObjectAnime.etats.attenteBas;
             }
 
+            if (keys.IsKeyDown(Keys.Space))
+            {
+                cat.position = new Rectangle(65, 65, 63, 63);
+            }
+
             //On appelle la méthode Update du chat qui permet de gérer les états
             cat.Update(gameTime);
             previousKeys = keys;
@@ -155,24 +172,35 @@ namespace Game1
 
         protected void UpdateCat()
         {
-                if (cat.position.X < fenetre.Left)
-                {
-                    cat.position.X = fenetre.Left;
-                }
-                else if (cat.position.Y < fenetre.Top)
-                {
-                    cat.position.Y = fenetre.Top;
-                }
+            if (cat.position.X < fenetre.Left)
+            {
+                cat.position.X = fenetre.Left;
+            }
+            else if (cat.position.Y < fenetre.Top)
+            {
+                cat.position.Y = fenetre.Top;
+                
+            }
 
-                else if (cat.position.X + 65 > fenetre.Right)
-                {
-                    cat.position.X = fenetre.Right - 65;
-                }
-                else if (cat.position.Y + 65 > fenetre.Bottom)
-                {
+            else if (cat.position.X + 65 > fenetre.Right)
+            {
+                //cat.position.X = fenetre.Right - 65;
 
-                    cat.position.Y = fenetre.Bottom - 65;
-                }
+                //arreter le temps quand le joueur trouve la sortie.
+                calculTemps = false;
+                
+                //Changer la map
+                fond.map = fond.map2;
+                cat.position = new Rectangle(65, 65, 63, 63);
+                
+            }
+            else if (cat.position.Y + 65 > fenetre.Bottom)
+            {
+
+                cat.position.Y = fenetre.Bottom - 65;
+                fond.map = fond.map3;
+                cat.position = new Rectangle(65, 65, 63, 63);
+            }
 
         }
 
@@ -188,15 +216,31 @@ namespace Game1
 
                     if (fond.map[i, j] == 1)
                     {
-                        if (cat.position.Intersects(fond.rectSource))
+                        Rectangle poil = new Rectangle(cat.position.X + 2, cat.position.Y + 2, cat.position.Width - 4, cat.position.Height - 4);
+                        if (poil.Intersects(fond.rectSource))
                         {
                             cat.position.X -= (int)(cat.vitesse.X * cat.direction.X);
                             cat.position.Y -= (int)(cat.vitesse.Y * cat.direction.Y);
 
                         }
                     }
+                    if (fond.map[i, j] == 3)
+                    {
+                        if (cat.position.Intersects(fond.rectSource))
+                        {
+                            cat.vitesse.X = 1;
+                            cat.vitesse.Y = 1;
+                        }
+                    }
+                    if (fond.map[i, j] == 2)
+                    {
+                        if (cat.position.Intersects(fond.rectSource))
+                        {
+                            cat.vitesse.X = 2;
+                            cat.vitesse.Y = 2;
+                        }
+                    }
                 }
-
             }
         }
 
@@ -212,16 +256,28 @@ namespace Game1
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            Rectangle lumiere = new Rectangle(cat.position.X - 50, cat.position.Y - 50, cat.spriteAfficher.Width + 100, cat.spriteAfficher.Height + 100);
+            Rectangle lumiere = new Rectangle(cat.position.X - 50, cat.position.Y - 50, cat.spriteAfficher.Width + 150, cat.spriteAfficher.Height + 100);
 
-            fond.Draw(spriteBatch,lumiere);
+            fond.Draw(spriteBatch, lumiere);
 
-            DrawRectangle(new Rectangle(0, 0, (int)font.MeasureString("Time: " + gameTime.TotalGameTime.Seconds + " Sec ").X, (int)font.MeasureString("Time: " + gameTime.TotalGameTime.Seconds + " Sec ").Y), Color.White*.1F);
+            //DrawRectangle(new Rectangle(0, 0, (int)font.MeasureString("Time: " + gameTime.TotalGameTime.Seconds + " Sec ").X, (int)font.MeasureString("Time: " + gameTime.TotalGameTime.Seconds + " Sec ").Y), Color.White*.1F);
+
 
             spriteBatch.Draw(cat.sprite, cat.position, cat.spriteAfficher, Color.White);
-            spriteBatch.DrawString(font, "Time: " + gameTime.TotalGameTime.Seconds + " Sec ", new Vector2(0, 0), Color.White);
-            spriteBatch.End();
 
+            if (calculTemps)
+            {
+                spriteBatch.DrawString(font, "Time: " + gameTime.TotalGameTime.Minutes + " minutes, " + gameTime.TotalGameTime.Seconds + " Sec ", new Vector2(0, 0), Color.White);
+                finTempsSec = gameTime.TotalGameTime.Seconds.ToString();
+                finTempsMin = gameTime.TotalGameTime.Minutes.ToString();
+
+            }
+            
+            
+            spriteBatch.DrawString(font, "Time: " + finTempsMin + " minutes, " + finTempsSec + " Sec ", new Vector2(0, 0), Color.White);
+            //spriteBatch.DrawString(font, "Time: " + gameTime.TotalGameTime.Minutes + " minutes, " + gameTime.TotalGameTime.Seconds + " Sec ", new Vector2(0, 0), Color.White);
+            
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -15,6 +15,7 @@ namespace Game1
         public Vector2 direction;
         public Rectangle position;
         public Rectangle spriteAfficher;
+        
 
         public enum etats { attenteDroite, attenteGauche, runDroite, runGauche, runHaut, runBas,attenteHaut, attenteBas };
         public etats objetState;

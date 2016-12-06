@@ -32,10 +32,11 @@ namespace ExerciceJeuxVersion2
         SoundEffectInstance lance;
         SoundEffect son3;
         SoundEffectInstance toucheEnnemi;
-
-        SpriteFont font;
         bool sonGagne = false;
         bool sonPerd = false;
+
+        SpriteFont font;
+
         bool calculTemps = true;
         string finTemps;
 
@@ -324,18 +325,18 @@ namespace ExerciceJeuxVersion2
             for (int i = 0; i < tabEtoiles.Length; i++)
             {
                 //toujours position heros
-                
+
 
                 if (tabEtoiles[i].estVivant)
                 {
-                    
+
                     tabEtoiles[i].position.X += (int)tabEtoiles[i].direction.X;
                     tabEtoiles[i].position.Y += (int)tabEtoiles[i].direction.Y;
 
                     //Mettre ds For quand on gagne la partie
                     tabEtoiles[i].direction.X = etoiles.Next(-5, 6) + tabEtoiles[i].vitesse;
                     tabEtoiles[i].direction.Y = etoiles.Next(-5, 6) + tabEtoiles[i].vitesse;
-                    
+
                 }
 
             }
@@ -428,7 +429,7 @@ namespace ExerciceJeuxVersion2
 
             this.spriteBatch.Draw(fond, fenetre, Color.White);
             spriteBatch.DrawString(font, "Vie Kirby: " + viekirby, new Vector2(1000, 0), Color.Black);
-            spriteBatch.DrawString(font, "Vie Meta Knight: " + vieEnnemi/2, new Vector2(1000, 50), Color.Black);
+            spriteBatch.DrawString(font, "Vie Meta Knight: " + vieEnnemi / 2, new Vector2(1000, 50), Color.Black);
 
 
             //Affiche le Heros
@@ -544,7 +545,7 @@ namespace ExerciceJeuxVersion2
                     }
                 }
             }
-            
+
             spriteBatch.End();
 
 
