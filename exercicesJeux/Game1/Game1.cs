@@ -20,11 +20,12 @@ namespace Game1
         KeyboardState keys = new KeyboardState();
         KeyboardState previousKeys = new KeyboardState();
         SpriteFont font;
+
+        //temps
         bool calculTemps = true;
-        string finTempsMin;
-        string finTempsSec;
         int totalTemps;
-        
+        int finTempsSec;
+        double moyenne = 0;
 
 
         public Game1()
@@ -76,6 +77,7 @@ namespace Game1
 
             cat = new GameObjectAnime();
             cat.direction = Vector2.Zero;
+            cat.estVivant = true;
             cat.vitesse.X = 2;
             cat.vitesse.Y = 2;
             cat.objetState = GameObjectAnime.etats.attenteDroite;
@@ -164,13 +166,13 @@ namespace Game1
             cat.position.X += (int)(cat.vitesse.X * cat.direction.X);
             cat.position.Y += (int)(cat.vitesse.Y * cat.direction.Y);
             base.Update(gameTime);
-            UpdateCat();
+            UpdateCat(gameTime);
             Collision();
 
 
         }
 
-        protected void UpdateCat()
+        protected void UpdateCat(GameTime gameTime)
         {
             if (cat.position.X < fenetre.Left)
             {
@@ -178,28 +180,34 @@ namespace Game1
             }
             else if (cat.position.Y < fenetre.Top)
             {
-                cat.position.Y = fenetre.Top;
+                //cat.position.Y = fenetre.Top;
+                cat.estVivant = false;
+                calculTemps = false;
                 
+
+                totalTemps = (int)gameTime.TotalGameTime.TotalSeconds;
+                moyenne = totalTemps / 3;
+
             }
 
             else if (cat.position.X + 65 > fenetre.Right)
             {
                 //cat.position.X = fenetre.Right - 65;
 
-                //arreter le temps quand le joueur trouve la sortie.
-                calculTemps = false;
-                
+                finTempsSec = (int)gameTime.TotalGameTime.TotalSeconds;
+
                 //Changer la map
                 fond.map = fond.map2;
                 cat.position = new Rectangle(65, 65, 63, 63);
-                
+
             }
             else if (cat.position.Y + 65 > fenetre.Bottom)
             {
-
+               
                 cat.position.Y = fenetre.Bottom - 65;
                 fond.map = fond.map3;
                 cat.position = new Rectangle(65, 65, 63, 63);
+             
             }
 
         }
@@ -251,8 +259,7 @@ namespace Game1
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-
+            
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
@@ -261,26 +268,33 @@ namespace Game1
             fond.Draw(spriteBatch, lumiere);
 
             //DrawRectangle(new Rectangle(0, 0, (int)font.MeasureString("Time: " + gameTime.TotalGameTime.Seconds + " Sec ").X, (int)font.MeasureString("Time: " + gameTime.TotalGameTime.Seconds + " Sec ").Y), Color.White*.1F);
-
-
+            
             spriteBatch.Draw(cat.sprite, cat.position, cat.spriteAfficher, Color.White);
-
+            
             if (calculTemps)
             {
-                spriteBatch.DrawString(font, "Time: " + gameTime.TotalGameTime.Minutes + " minutes, " + gameTime.TotalGameTime.Seconds + " Sec ", new Vector2(0, 0), Color.White);
-                finTempsSec = gameTime.TotalGameTime.Seconds.ToString();
-                finTempsMin = gameTime.TotalGameTime.Minutes.ToString();
+                spriteBatch.DrawString(font, "Time: " + gameTime.TotalGameTime.Seconds + " Sec ", new Vector2(0, 0), Color.White);
 
             }
+            else
+            {
+                spriteBatch.DrawString(font, "Time: " + totalTemps + " Sec ", new Vector2(0, 0), Color.White);
+            }
             
-            
-            spriteBatch.DrawString(font, "Time: " + finTempsMin + " minutes, " + finTempsSec + " Sec ", new Vector2(0, 0), Color.White);
             //spriteBatch.DrawString(font, "Time: " + gameTime.TotalGameTime.Minutes + " minutes, " + gameTime.TotalGameTime.Seconds + " Sec ", new Vector2(0, 0), Color.White);
-            
+
+            if (cat.estVivant != true)
+            {
+                spriteBatch.DrawString(font, "Felicitation vous avez fini le jeu. :) ", new Vector2(500, 500), Color.White);
+                spriteBatch.DrawString(font, "Temps moyen: " + moyenne + " Sec ", new Vector2(500, 550), Color.White);
+                
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
         private void DrawRectangle(Rectangle coords, Color color)
         {
             var rect = new Texture2D(graphics.GraphicsDevice, 1, 1);
